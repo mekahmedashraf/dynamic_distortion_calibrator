@@ -3,14 +3,14 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
   // frame in which the camera signal will be shown
-  cam.setup(320,240);
+  //cam.setup(320,240);
   ofBackground(ofColor::white);
   //set framerate (speed) of the travelling pixel
   ofSetFrameRate(240);
   windowHeight = ofGetWindowHeight();
   windowWidth = ofGetWindowWidth();
-  startX = round(windowWidth / 2.0);
-  startY = round(windowHeight / 2.0);
+  startX = floor(windowWidth / 2.0);
+  startY = floor(windowHeight / 2.0);
   x = startX;
   y = startY;
   pixelSize = 10;
@@ -21,7 +21,7 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
   // stetic update of the received Signal
-  cam.update();
+  //cam.update();
   //cam.getPixels();
 
 
@@ -40,33 +40,48 @@ void ofApp::update(){
   // attempting to spiral pixel from middle point
   switch (spiralDirection) {
 	case 0: std::cout << "in case 0\n";
-		y--;
-		if (y == startY - spiralSize) {
+    if (y < 0) {
+      x = startX - spiralSize;
+      spiralDirection = 2;
+    }
+    y--;
+		if (y <= startY - spiralSize) {
 			spiralDirection = 1; // change direction to left
 		};
 		break;
 	case 1: std::cout << "in case 1\n";
-		x--;
-		if (x == startX - spiralSize) {
+    if (x < 0) {
+      y = startY + spiralSize;
+      spiralDirection = 3;
+    }
+    x--;
+		if (x <= startX - spiralSize) {
 			spiralDirection = 2; // change direction to left
 			spiralSize += pixelSize;
 		};
 		break;
 	case 2: std::cout << "in case 2\n";
-		  y++;
-		  if (y == startY + spiralSize) {
-			  spiralDirection = 3; // change direction to left
-		  };
-		  break;
+    if (y > ofGetWindowHeight() ) {
+      x = startX + spiralSize;
+      spiralDirection = 0;
+    }
+    y++;
+		if (y >= startY + spiralSize) {
+			spiralDirection = 3; // change direction to left
+		};
+		break;
 	case 3: std::cout << "in case 3\n";
-		  x++;
-		  if (x == startX + spiralSize) {
-			  spiralDirection = 0; // change direction to left
-			  spiralSize += pixelSize;
-		  };
-		  break;
+    if (x > ofGetWindowWidth()) {
+      y = startY - spiralSize;
+      spiralDirection = 1;
+    }
+    x++;
+		if (x >= startX + spiralSize) {
+			spiralDirection = 0; // change direction to left
+			spiralSize += pixelSize;
+		};
+		break;
 	}
-
 }
 
 //--------------------------------------------------------------
@@ -89,8 +104,6 @@ void ofApp::draw() {
   ofSetColor(ofColor::red);
   ofDrawRectangle(x, y, pixelSize, pixelSize);
 
-  string text = "breite" + to_string(cam.getWidth()) + "hoehe" + to_string(cam.getHeight());
-  ofDrawBitmapStringHighlight(text,ofPoint(10,10,0.0),ofColor::white,ofColor::black );
 
   // finaly draw the camera frame 
   //cam.draw(0, 0);

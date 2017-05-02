@@ -24,7 +24,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);		
 
     // Object for camera signal
-    ofVideoGrabber cam;
+    //ofVideoGrabber cam;
 
     ofxPanel gui;
     ofParameter<int> x, y;
@@ -37,5 +37,6 @@ class ofApp : public ofBaseApp{
 		int startX;
 		int startY;
 		int spiralDirection; // 0 -> up; 1 -> left; 2 -> down; 3 -> right
+
 
 };
