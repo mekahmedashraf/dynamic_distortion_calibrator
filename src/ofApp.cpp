@@ -54,7 +54,6 @@ void ofApp::update() {
 
 	pix = img.getPixels();
 	for (auto & pixel : pix.getPixelsIter()) {
-
 		pixel.getColor();
 		if (!(pixel.getColor() == ofColor::white)) {
 			recog = true;
@@ -62,9 +61,8 @@ void ofApp::update() {
 		else {
 			//pixelSize++;
 		}
-		
 	}
-  
+	
 
 
 
